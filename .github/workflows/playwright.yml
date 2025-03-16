@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v2
 
     - name: Set up Node.js
@@ -30,8 +30,11 @@ jobs:
     - name: Run Playwright tests
       run: npx playwright test
 
+    - name: List files in test-results
+      run: ls -R test-results/
+
     - name: Upload Playwright test results
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: playwright-results
         path: test-results/
