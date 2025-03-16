@@ -143,7 +143,7 @@ Both approaches use **Playwright** for browser automation, while GitHub Actions 
 
 The GitHub Actions file for Playwright tests playwright.yml file is included in .github/workflows.
 
-###Feedback on the Exercise
+### Feedback on the Exercise
 Page not loading consistently: Sometimes, the page does not load properly on the first attempt, which affects the user experience. Consider optimizing the page loading process.
 No wallet support except MetaMask: Currently, the DApp only supports MetaMask for wallet connections. It would be beneficial to support additional wallets (e.g., WalletConnect, Coinbase Wallet) for broader accessibility.
 Processing time on MetaMask confirmation is high: The processing time for MetaMask confirmations is longer than expected. It would be helpful to have a visual indication, such as a loading spinner or a "processing" button, during the confirmation process.
