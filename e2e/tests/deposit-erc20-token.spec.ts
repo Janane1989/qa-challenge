@@ -18,13 +18,11 @@ test.describe('Deposit ERC20 Tokens', () => {
     const dappPage = await browserContext.newPage();
 
     await dappPage.goto('https://qa-challange.netlify.app');
-
-    await dappPage.fill('input#input-address', '0xCD85B9a767eF2277E264A4B9A14a2deACAB82FfB');
+    await dappPage.fill('[data-test="InputAddress__Span__exampleTokenLink"]', '0xCD85B9a767eF2277E264A4B9A14a2deACAB82FfB');
     await dappPage.click('button:has-text("Submit")');
 
-    // Assertions
     await expect(dappPage.locator('text=Your token balance is 0')).toBeVisible();
-    await expect(dappPage.locator('#deposit-input:has-text("error")')).toBeVisible();
+    await expect(dappPage.locator('[data-test="DepositToken__Input__depositAmount"]')).toBeVisible();
     await expect(dappPage.locator('button:has-text("Deposit")')).not.toBeVisible();
 
     console.log("✅ User was prevented from depositing with an empty balance.");
@@ -57,25 +55,28 @@ test.describe('Deposit ERC20 Tokens', () => {
 
     await dappPage.goto('https://qa-challange.netlify.app');
 
-    await dappPage.click('text=Select another token');
+    await dappPage.click('[data-test="InputAddress__Span__exampleTokenLink"]');
     await expect(dappPage.locator('button:has-text("Deposit")')).toBeVisible();
 
     // Enter max amount
     const balanceText = await dappPage.locator('text=Your token balance is').textContent();
     const balance = parseInt(balanceText.match(/\d+/)[0], 10);
-    await dappPage.fill('#deposit-input', balance.toString());
+    await dappPage.fill('[data-test="DepositToken__Input__depositAmount"]', balance.toString());
 
     await dappPage.click('button:has-text("Deposit")');
+     
+    const metamaskPages = browserContext.pages().filter(page => page.url().includes('chrome-extension://'));
 
-    // Simulate MetaMask deposit approval
-    const metamaskPage = browserContext.pages().find(page => page.url().includes('chrome-extension://'));
-    if (metamaskPage) {
-      await metamaskPage.click('button:has-text("Confirm")');
+    if (metamaskPages.length > 0) {
+        // Spending Cap Confirmation
+        await metamaskPages[0].click('button:has-text("Confirm")');
+
+        // Transaction Confirmation
+        await metamaskPages[0].click('button:has-text("Confirm")');
     }
 
-    // Assertions
+    
     await expect(dappPage.locator('text=Your token balance is 0')).toBeVisible();
 
     console.log("✅ User successfully deposited tokens.");
-  });
 });

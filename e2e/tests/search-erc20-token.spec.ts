@@ -16,8 +16,8 @@ test.describe("Search ERC20 Tokens", () => {
 
   test("The user can search for an existing ERC20 token and see balance and deposit history", async ({ page }) => {
     // Enter a valid ERC20 token address
-    await page.fill('input[type="text"]', "0x9982f9A3bA28c34aD03737745d956EC0668ea440");
-    await page.click('button:has-text("Submit")');
+    await page.fill('[data-test="InputAddress__Input__addressValue"]', "0x9982f9A3bA28c34aD03737745d956EC0668ea440");
+    await page.click('[data-test="InputAddress__Button__submit"]');
 
     // Verify the balance is displayed
     await expect(page.locator("text=Your token balance is")).toBeVisible();
@@ -28,15 +28,15 @@ test.describe("Search ERC20 Tokens", () => {
 
   test("The user enters an invalid ERC20 token address", async ({ page }) => {
     // Enter an invalid ERC20 token address
-    await page.fill('input[type="text"]', "0x9982f9A3bA28c");
+    await page.fill('[data-test="InputAddress__Input__addressValue"]', "0x9982f9A3bA28c");
 
     // Verify the submit button is disabled
-    await expect(page.locator('button:has-text("Submit")')).toBeDisabled();
+    await expect(page.locator('[data-test="InputAddress__Button__submit"]')).toBeDisabled();
   });
 
   test("The user clicks the example token link and sees balance & deposit history", async ({ page }) => {
     // Click the example token link
-    await page.click('text=Select another token');
+    await page.click('[data-test="InputAddress__Span__exampleTokenLink"]');
 
     // Verify balance is displayed
     await expect(page.locator("text=Your token balance is")).toBeVisible();
